@@ -48,12 +48,19 @@ struct ContentView: View {
                     TextField("予定1", text: $event1)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding(.leading, 10)
+                        
                     TextField("0", value: $hour1, formatter: NumberFormatter())
+                        .keyboardType(.numberPad)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        
                     Text(":")
+                        
                     TextField("00", value: $minutes1, formatter: NumberFormatter())
+                        .keyboardType(.numberPad)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        
                     Text(":")
+                        
                     Text("00")
                         .padding(.trailing, 10)
                 }
@@ -63,6 +70,7 @@ struct ContentView: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding(.leading, 10)
                     TextField("0", value: $hour2, formatter: NumberFormatter())
+                        .keyboardType(.numberPad)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     Text(":")
                     TextField("00", value: $minutes2, formatter: NumberFormatter())
@@ -71,47 +79,42 @@ struct ContentView: View {
                     Text("00")
                         .padding(.trailing, 10)
                 }
+
                 
                 HStack {
                     TextField("予定3", text: $event3)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding(.leading, 10)
                     TextField("0", value: $hour3, formatter: NumberFormatter())
+                        .keyboardType(.numberPad)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     Text(":")
                     TextField("00", value: $minutes3, formatter: NumberFormatter())
+                        .keyboardType(.numberPad)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     Text(":")
                     Text("00")
                         .padding(.trailing, 10)
                 }
+
                 
                 HStack {
                     TextField("予定4", text: $event4)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding(.leading, 10)
                     TextField("0", value: $hour4, formatter: NumberFormatter())
+                        .keyboardType(.numberPad)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     Text(":")
                     TextField("00", value: $minutes4, formatter: NumberFormatter())
+                        .keyboardType(.numberPad)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     Text(":")
                     Text("00")
                         .padding(.trailing, 10)
                 }
+
                 
-                //一番最初だけ
-//                Button {
-//                    let timeList = [hour1, minutes1, hour2, minutes2, hour3, minutes3,hour4,minutes4]
-//                    print("\(timeList)")
-//                    vm.hours = timeList[hourListCount]
-//                    vm.minutes = timeList[minutesListCount]
-//                    isStart = false
-//                    vm.notificationConfirm()
-//                } label: {
-//                    Text("set")
-//                }
-//                .disabled(isSet)
                 Spacer()
                     .frame(height: 30)
                 
@@ -219,9 +222,11 @@ struct ContentView: View {
                 }
                 .scaleEffect(vm.isLarge ?  0.7 : 1)
                 .animation(.default, value: vm.isLarge)
+                .ignoresSafeArea(.keyboard, edges: .all)
+
                 
-                Spacer()
-                    .frame(height: 200)
+//                Spacer()
+//                    .frame(height: 200)
                 
                 //start,reset
                 HStack {
@@ -234,7 +239,6 @@ struct ContentView: View {
                             .foregroundColor(.green)
                             .padding(.horizontal, 50)
                             .padding(.vertical, 10)
-                            
                             .background(
                                 RoundedRectangle(cornerRadius: 20)
                                     .foregroundStyle(.ultraThinMaterial)
@@ -256,6 +260,18 @@ struct ContentView: View {
                         vm.reset()
                         isSet = false
                         isStart = true
+                        vm.hours = 0
+                        vm.minutes = 0
+                        hour1 = 0
+                        minutes1 = 0
+                        hour2 = 0
+                        minutes2 = 0
+                        hour3 = 0
+                        minutes3 = 0
+                        hour4 = 0
+                        minutes4 = 0
+                       
+                        
                     } label: {
                         Text("Reset")
                             .font(.system(size: 20, weight: .heavy, design: .rounded))
@@ -279,7 +295,9 @@ struct ContentView: View {
             }
             .onReceive(timer) { _ in
                 vm.updateCountDown()
+                    
             }
+            .ignoresSafeArea(.keyboard, edges: .all)
             .navigationBarTitle("Timer", displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing){
@@ -290,6 +308,7 @@ struct ContentView: View {
                         vm.minutes = timeList[minutesListCount]
                         isStart = false
                         vm.notificationConfirm()
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     } label: {
                         Text("set")
                             .font(.system(size: 20, weight: .heavy, design: .rounded))
@@ -298,7 +317,6 @@ struct ContentView: View {
                 }
             }
         }
-        
     }
 }
 
